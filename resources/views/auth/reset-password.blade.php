@@ -1,39 +1,70 @@
 <x-guest-layout>
+
+    {{-- Logo & Halaman Reset Password --}}
+    <div class="text-center text-primary mb-5">
+        <img src="{{ asset('assets/img/logo-2.png') }}" alt="logo" class="maxwidth-200 mx-auto"><br>
+        <p class="opacity-75 fs-6">Enter your new password to reset your account.</p>
+    </div>
+
+    {{-- Form Reset Password --}}
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
 
-        <!-- Password Reset Token -->
+        {{-- Token Reset (dibawa dari email) --}}
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        {{-- Email --}}
+        <div class="form-floating mb-3">
+            <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                placeholder="Email Address" value="{{ old('email', $request->email) }}" required autofocus
+                autocomplete="username">
+
+            <label for="email">Email Address</label>
+
+            {{-- Error Validasi --}}
+            @error('email')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        {{-- Password Baru --}}
+        <div class="form-floating mb-3">
+            <input type="password" id="password" name="password"
+                class="form-control @error('password') is-invalid @enderror" placeholder="New Password"
+                autocomplete="new-password" required>
+
+            <label for="password">New Password</label>
+
+            {{-- Error Validasi --}}
+            @error('password')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        {{-- Konfirmasi Password Baru --}}
+        <div class="form-floating mb-4">
+            <input type="password" id="password_confirmation" name="password_confirmation"
+                class="form-control @error('password_confirmation') is-invalid @enderror" placeholder="Confirm Password"
+                autocomplete="new-password" required>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            <label for="password_confirmation">Confirm Password</label>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+            {{-- Error Validasi --}}
+            @error('password_confirmation')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
+        {{-- Tombol Reset --}}
+        <button type="submit" class="btn btn-lg btn-primary theme-black w-100">
+            Reset Password
+        </button>
+
+        {{-- Redirect ke Login --}}
+        <div class="text-center mt-3">
+            <a href="{{ route('login') }}" class="text-primary small">Back to Login</a>
         </div>
+
     </form>
+
 </x-guest-layout>

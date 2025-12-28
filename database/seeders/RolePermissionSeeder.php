@@ -20,6 +20,11 @@ class RolePermissionSeeder extends Seeder
             'manage users',
             'approve document',
             'view reports',
+            'manage permissions',
+            'manage roles',
+
+            // 📌 Tambahkan yang baru ini
+            'view logs',
         ];
 
         foreach ($permissions as $permission) {
@@ -49,6 +54,11 @@ class RolePermissionSeeder extends Seeder
             'manage users',
             'approve document',
             'view reports',
+            'manage permissions',
+            'manage roles',
+
+            // 📌 Tambahkan juga disini
+            'view logs',
         ]);
 
         $approver->syncPermissions([
