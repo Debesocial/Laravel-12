@@ -1,78 +1,75 @@
 <div class="card adminuiux-card mb-4 shadow-sm">
     <div class="card-body">
 
-        {{-- Header --}}
+        {{-- header --}}
         <h4 class="fw-bold mb-3">Update Password</h4>
         <p class="text-secondary small mb-4">Make sure your new password is secure.</p>
+        {{-- form update password --}}
+        <form method="POST" action="{{ route('password.update') }}" autocomplete="off">
 
-        {{-- Form Update Password --}}
-        <form method="post" action="{{ route('password.update') }}">
             @csrf
-            @method('put')
+            @method('PUT')
+
+            {{-- anti autofill trap --}}
+            <input type="text" name="fakeuser" style="display:none">
+            <input type="password" name="fakepass" style="display:none">
 
             {{-- Current Password --}}
             <div class="mb-3">
-                <label for="update_password_current_password" class="form-label">
-                    Current Password <span class="text-danger">*</span>
+                <label for="update_password_current_password" class="form-label fw-semibold">
+                    {{ __('Current Password') }} <span class="text-danger">*</span>
                 </label>
                 <input type="password" id="update_password_current_password" name="current_password"
-                    placeholder="Enter current password"
-                    class="form-control @error('current_password', 'updatePassword') is-invalid @enderror"
-                    autocomplete="current-password" required>
-
-                @error('current_password','updatePassword')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                    class="form-control" placeholder="Enter current password" required autocomplete="off" minlength="12"
+                    title="Enter your current password">
             </div>
 
             {{-- New Password --}}
             <div class="mb-3">
-                <label for="update_password_password" class="form-label">
-                    New Password <span class="text-danger">*</span>
+                <label for="update_password_password" class="form-label fw-semibold">
+                    {{ __('New Password') }} <span class="text-danger">*</span>
                 </label>
-                <input type="password" id="update_password_password" name="password" placeholder="Enter new password"
-                    class="form-control @error('password','updatePassword') is-invalid @enderror"
-                    autocomplete="new-password" required>
-
-                @error('password','updatePassword')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                <input type="password" id="update_password_password" name="password" class="form-control"
+                    placeholder="Enter new password" required minlength="12" autocomplete="new-password"
+                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}$"
+                    title="Minimum 12 characters with uppercase, lowercase, number, and symbol">
             </div>
 
             {{-- Confirm Password --}}
             <div class="mb-3">
-                <label for="update_password_password_confirmation" class="form-label">
-                    Confirm Password <span class="text-danger">*</span>
+                <label for="update_password_password_confirmation" class="form-label fw-semibold">
+                    {{ __('Confirm Password') }} <span class="text-danger">*</span>
                 </label>
                 <input type="password" id="update_password_password_confirmation" name="password_confirmation"
-                    placeholder="Confirm new password"
-                    class="form-control @error('password_confirmation','updatePassword') is-invalid @enderror"
-                    autocomplete="new-password" required>
-
-                @error('password_confirmation','updatePassword')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+                    class="form-control" placeholder="Confirm new password" required minlength="12"
+                    autocomplete="new-password" title="Must match the new password exactly">
             </div>
 
-            {{-- Submit --}}
+            {{-- submit --}}
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-primary mt-3 px-3">Update Password</button>
+                <button type="submit" class="btn btn-primary mt-3 px-3">
+                    {{ __('Update Password') }}
+                </button>
             </div>
+
         </form>
+
     </div>
 </div>
 
-{{-- SweetAlert2 CDN --}}
+{{-- sweetalert2 cdn --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{-- SweetAlert Success (trigger setelah update berhasil) --}}
+{{-- sweetalert success (trigger setelah update berhasil) --}}
 @if (session('status') === 'password-updated')
 <script>
+// show success alert
 Swal.fire({
     icon: 'success',
     title: 'Password Updated',
     text: 'Your password successfully updated.',
-    confirmButtonColor: '#1e1e1e', // black solid button
+    showConfirmButton: false,
+    timer: 1200
 });
 </script>
 @endif

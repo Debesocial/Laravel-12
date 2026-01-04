@@ -1,6 +1,9 @@
 <x-guest-layout>
+    @php
+    $logo = get_setting('app_logo');
+    @endphp
 
-    {{-- Logo & Halaman Reset Password --}}
+    {{-- Logo & Intro --}}
     <div class="text-center text-primary mb-5">
         <img src="{{ asset('assets/img/logo-2.png') }}" alt="logo" class="maxwidth-200 mx-auto"><br>
         <p class="opacity-75 fs-6">Enter your new password to reset your account.</p>
@@ -64,7 +67,11 @@
         <div class="text-center mt-3">
             <a href="{{ route('login') }}" class="text-primary small">Back to Login</a>
         </div>
-
     </form>
+
+    <div class="text-center text-primary mb-5">
+        {{-- Footer --}}
+        <small class="opacity-50 d-block mt-4"> {{ $footer_text }} </small>
+    </div>
 
 </x-guest-layout>

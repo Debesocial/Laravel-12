@@ -10,8 +10,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "anhskohbo/no-captcha": "^3.7",
         "laravel/framework": "^12.0",
+        "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10.1",
+        "nwidart/laravel-modules": "^12.0",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-permission": "^6.24"
     },
     "require-dev": {
@@ -29,9 +33,13 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "Modules\\": "Modules/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+            "app\\Helpers\\SettingsHelper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -86,7 +94,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",

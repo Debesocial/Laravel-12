@@ -1,18 +1,18 @@
 <div class="card adminuiux-card border-danger shadow-sm mt-4">
     <div class="card-body">
 
-        {{-- Header & Deskripsi --}}
+        {{-- header and description --}}
         <h4 class="fw-bold text-danger mb-2">Delete Account</h4>
         <p class="text-secondary small mb-3">
             Once deleted, all your data will be permanently removed. Download any information you want to keep.
         </p>
 
-        {{-- Tombol Trigger SweetAlert Konfirmasi --}}
+        {{-- trigger button for sweetalert confirmation --}}
         <button id="deleteAccountBtn" class="btn btn-danger mt-3 px-3">
             Delete Account
         </button>
 
-        {{-- Form Delete Akun (disubmit setelah konfirmasi SweetAlert) --}}
+        {{-- delete account form (submitted after sweetalert confirmation) --}}
         <form id="deleteAccountForm" method="post" action="{{ route('profile.destroy') }}" style="display:none;">
             @csrf
             @method('delete')
@@ -21,13 +21,14 @@
     </div>
 </div>
 
-{{-- SweetAlert2 CDN --}}
+{{-- sweetalert2 cdn --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
 document.getElementById('deleteAccountBtn').addEventListener('click', function(e) {
     e.preventDefault();
 
+    // show confirmation dialog
     Swal.fire({
         title: 'Are you sure?',
         text: "Once deleted, your account and data will be permanently removed.",
@@ -42,12 +43,14 @@ document.getElementById('deleteAccountBtn').addEventListener('click', function(e
         confirmButtonText: 'Delete Account',
         confirmButtonColor: '#d33',
         cancelButtonColor: '#6c757d',
-        reverseButtons: true,
+        reverseButtons: false,
         preConfirm: (password) => {
-            if (!password) Swal.showValidationMessage('Password is required');
+            if (!password)
+                Swal.showValidationMessage('Password is required');
             return password;
         }
     }).then((result) => {
+        // if confirmed, submit form
         if (result.isConfirmed) {
             document.getElementById('passwordInput').value = result.value;
             document.getElementById('deleteAccountForm').submit();
@@ -56,7 +59,7 @@ document.getElementById('deleteAccountBtn').addEventListener('click', function(e
 });
 </script>
 
-{{-- SweetAlert Error jika password salah (validasi dari server) --}}
+{{-- sweetalert error if password is incorrect (server validation) --}}
 @if ($errors->userDeletion->has('password'))
 <script>
 Swal.fire({

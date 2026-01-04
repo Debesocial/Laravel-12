@@ -18,26 +18,45 @@ class AuthenticatedSessionController extends Controller
     }
 
     // Proses login
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        // Autentikasi kredensial user
-        $request->authenticate();
+public function store(LoginRequest $request): RedirectResponse
+{
+    // Autentikasi kredensial user
+    $request->authenticate();
 
-        // Regenerasi session untuk keamanan
-        $request->session()->regenerate();
+    // Regenerasi session untuk keamanan
+    $request->session()->regenerate();
 
-        /** @var \App\Models\User $user */
-        $user = Auth::user();
+    /** @var \App\Models\User $user */
+    $user = Auth::user();
 
-        // Arahkan admin ke dashboard
-        if ($user->hasRole('admin')) {
-            return redirect()->intended('/dashboard');
-        }
+    if ($request->boolean('remember')) {
 
-        // Arahkan user lain (default)
-        return redirect()->intended('/dashboard');
+        // Set durasi Remember Me (contoh: 30 hari)
+        $minutes = 60 * 24 * 30;
+
+        // Buat ulang cookie remember me dengan durasi custom
+        cookie()->queue(
+            cookie(
+                name: Auth::getRecallerName(), 
+                value: Auth::getRecallerName(), 
+                minutes: $minutes,
+                httpOnly: true, // keamanan
+                secure: app()->environment('production'), // https di prod
+            )
+        );
     }
+    
+// Redirect berdasarkan role
+if ($user->hasRole('superadmin')) {
+    return redirect()->intended('/dashboard');
+}
+if ($user->hasRole('admin')) {
+    return redirect()->intended('/dashboard');
+}
+// Default untuk role user
+return redirect()->intended('/dashboard');
 
+}
     // Logout user & destroy session
     public function destroy(Request $request): RedirectResponse
     {

@@ -2,16 +2,16 @@
 <html lang="en">
 
 <head>
-    <!-- Meta -->
+    {{-- meta --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>biiproject</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ $app_name }}</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
 
-    <!-- Fonts -->
+    {{-- font --}}
     @vite(['resources/js/app.js'])
-
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,27 +19,23 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Custom Root Variables -->
+    {{-- custom root --}}
     <style>
-    /* ====== Root / Fonts / Theme variables ====== */
     :root {
         --adminuiux-content-font: "Open Sans", sans-serif;
         --adminuiux-title-font: "Outfit", sans-serif;
     }
 
-    /* ====== Layout & Components ====== */
     .card {
         background-color: #ffffff8f !important;
     }
 
-    /* ====== Markdown ====== */
     .markdown-body {
         font-size: 15px;
         line-height: 1.6;
         font-family: var(--adminuiux-content-font);
     }
 
-    /* ====== SweetAlert (popup / buttons) ====== */
     .swal2-popup {
         border-radius: 30px !important;
         padding: 2rem 2.2rem !important;
@@ -63,7 +59,6 @@
         font-weight: 600 !important;
     }
 
-    /* ====== Buttons ====== */
     .btn-primary {
         --bs-btn-color: #fff !important;
         --bs-btn-bg: #1e1e1e !important;
@@ -81,7 +76,6 @@
         --bs-btn-disabled-border-color: #1e1e1e !important;
     }
 
-    /* ====== Datatables ====== */
     .dt-buttons {
         float: right !important;
     }
@@ -97,14 +91,14 @@
     }
     </style>
 
-    <!-- App CSS -->
+    {{-- apps css --}}
     <link rel="stylesheet" href="{{ asset('assets/css/app.css') }}">
 
-    <!-- Markdown Support -->
+    {{-- markdown --}}
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
 
-    <!-- Datatables -->
+    {{-- datatables --}}
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
@@ -117,7 +111,8 @@
     data-bs-target="#list-example" data-bs-smooth-scroll="true" tabindex="0"
     data-sidebarlayout="adminuiux-sidebar-boxed" data-headerlayout="adminuiux-header-standard"
     data-headerfill="adminuiux-header-transparent" data-bggradient="bg-gradient-1">
-    <!-- Page Loader -->
+
+    {{-- page loader --}}
     <div class="pageloader">
         <div class="container h-100">
             <div class="row justify-content-center align-items-center text-center h-100">
@@ -132,22 +127,22 @@
         </div>
     </div>
 
-    <!-- Header -->
+    {{-- header --}}
     <header class="adminuiux-header">
         <nav class="navbar navbar-expand-lg fixed-top">
             <div class="container-fluid">
-                <!-- Sidebar Toggle -->
+                {{-- sidebar toggle --}}
                 <button class="btn btn-link btn-square sidebar-toggler" type="button" onclick="initSidebar()">
                     <i class="sidebar-svg" data-feather="menu"></i>
                 </button>
-                <!-- Logo -->
+                {{-- logo --}}
                 <a class="navbar-brand" href="#">
                     <div class="d-block ps-2">
-                        <h6 class="mb-1">biiproject</h6>
-                        <p class="company-tagline">— AI for Strategic Management</p>
+                        <h6 class="mb-1">{{ $app_name }}</h6>
+                        <p class="company-tagline">{{ $app_tagline }}</p>
                     </div>
                 </a>
-                <!-- Right Icons -->
+                {{-- right icons --}}
                 <div class="ms-auto">
                     <button class="btn btn-link btn-square btnsunmoon btn-link-header" id="btn-layout-modes-dark-page">
                         <i class="sun mx-auto" data-feather="sun"></i>
@@ -178,12 +173,12 @@
 
     @include('layouts.navigation')
 
-    <!-- Page Content -->
+    {{-- page content --}}
     <main class="adminuiux-content has-sidebar " onclick="contentClick()">
         {{ $slot }}
     </main>
 
-    <!-- notification -->
+    {{-- notification --}}
     <div class="offcanvas offcanvas-end shadow border-0 maxwidth-300 pt-ios" tabindex="-1" id="view-notification"
         data-bs-scroll="true">
         <div class="offcanvas-header">
@@ -376,14 +371,14 @@
         </div>
     </div>
 
-    <!-- page footer -->
-    <!-- Footer -->
+    {{-- page footer --}}
+    {{-- footer --}}
     <footer class="adminuiux-footer has-adminuiux-sidebar mt-auto">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 col-md col-lg py-3">
-                    <span class="small">Copyright @2026, Designed by
-                        <a href="https://biiproject.com" target="_blank">biiproject.com</a>
+                    <span class="small">
+                        {{ $footer_text }}
                     </span>
                 </div>
                 <div class="col-12 col-md-auto col-lg-auto align-self-center">
@@ -399,7 +394,7 @@
         </div>
     </footer>
 
-    <!-- theming action-->
+    {{-- theming action --}}
     <div class="position-fixed bottom-0 end-0 m-3 z-index-5" id="fixedbuttons">
         <button class="btn btn-square btn-theme shadow rounded-circle" type="button" data-bs-toggle="offcanvas"
             data-bs-target="#theming" aria-controls="theming">
@@ -410,7 +405,7 @@
             <i class="bi bi-arrow-up"></i>
         </button>
     </div>
-    <!-- theming offcanvas-->
+    {{-- theming offcanvas --}}
     <div class="offcanvas offcanvas-end shadow border-0" tabindex="-1" id="theming" data-bs-scroll="true"
         data-bs-backdrop="false" aria-labelledby="theminglabel">
         <div class="offcanvas-header border-bottom">
@@ -626,20 +621,20 @@
         </div>
     </div>
 
-    <!-- jQuery -->
+    {{-- jQuery --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- SweetAlert -->
+    {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Markdown JS -->
+    {{-- Markdown JS --}}
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <!-- App JS -->
+    {{-- app js --}}
     <script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
-    <!-- Datatables -->
+    {{-- datatables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -649,13 +644,13 @@
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.colVis.min.js"></script>
 
-    <!-- Datatables Filter -->
+    {{-- datatables filter --}}
     <script>
     document.addEventListener("DOMContentLoaded", () => {
 
         let table = $('#datatables').DataTable({
 
-            // Basic setup
+            // basic setup
             responsive: true,
             fixedHeader: true,
             autoWidth: false,
@@ -663,7 +658,7 @@
             pageLength: 25,
             lengthMenu: [10, 25, 50, 100, 250, 500],
 
-            // Tampilan dan posisi tombol
+            // tampilan dan posisi tombol
             dom: `
             <"row mb-3"
                 <"col-md-4"l>
@@ -673,10 +668,9 @@
             <"row mt-3"
                 <"col-md-6"i>
                 <"col-md-6 text-end"p>
-            >
-        `,
+            >`,
 
-            // Tombol export
+            // tombol export
             buttons: [{
                     extend: "colvis",
                     text: "Columns",
@@ -705,29 +699,30 @@
                 }
             ],
 
-            // Pengaturan kolom
+            // pengaturan kolom
             columnDefs: [{
                 targets: "[data-hide='audit']",
                 visible: false
             }],
 
-            // Urutkan berdasarkan tanggal terbaru
-            order: [
-                [3, "desc"]
-            ],
-
-            // Tambah class ke row
+            // urutkan berdasarkan tanggal terbaru
+            order: [],
+            language: {
+                emptyTable: "{{ __('No notifications found.') }}",
+                zeroRecords: "{{ __('No matching records found.') }}"
+            },
+            // tambah class ke row
             createdRow: row => row.classList.add("align-middle"),
         });
 
-        // Filter berdasarkan input per kolom
+        // filter berdasarkan input per kolom
         $("#datatables thead tr.filter-row th").each(function(i) {
             $(this).find("input,select").on("keyup change", function() {
                 table.column(i).search(this.value).draw();
             });
         });
 
-        // Filter tanggal (>= tanggal input)
+        // filter tanggal (>= tanggal input)
         $.fn.dataTable.ext.search.push((settings, data) => {
             const input = $(".filter-row input[type=date]").val();
             const dateCol = data[3]?.split(" ")[0];
@@ -737,11 +732,50 @@
         $(".filter-row input[type=date]").on("change", () => table.draw());
     });
 
-    // Prevent sorting when clicking inside search inputs (header filter)
+    // prevent sorting when clicking inside search inputs (header filter)
     $('#datatables thead').on('click', 'input, select', function(e) {
         e.stopPropagation();
     });
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- SweetAlert untuk success / error biasa --}}
+    @if (session('success') || session('error'))
+    <script>
+    Swal.fire({
+        icon: "{{ session('success') ? 'success' : 'error' }}",
+        title: "{{ session('success') ? 'Success' : 'Error' }}",
+        text: "{{ session('success') ?? session('error') }}",
+        showConfirmButton: "{{ session('success') ? false : true }}",
+        timer: "{{ session('success') ? 1200 : null }}",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1e1e1e",
+        timerProgressBar: true
+    }).then((result) => {
+        window.location.reload();
+    });
+    </script>
+    @endif
+
+    {{-- SweetAlert untuk error validasi (seperti unique) --}}
+    @if ($errors->any())
+    <script>
+    Swal.fire({
+        icon: "error",
+        title: "Error Validation",
+        html: `
+        <ul style="text-align:left;">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    `,
+        showConfirmButton: true,
+        confirmButtonText: "OK",
+        confirmButtonColor: "#1e1e1e"
+    });
+    </script>
+    @endif
 
 </body>
 

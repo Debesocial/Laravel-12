@@ -11,42 +11,42 @@ class AdminUserSeeder extends Seeder
     public function run(): void
     {
         $users = [
+            // SUPERADMIN
             [
-                'name'  => 'Admin Utama',
-                'email' => 'admin1@example.com',
-                'password' => 'password123',
+                'name' => 'Super Admin',
+                'email' => 'superadmin@example.com',
+                'password' => 'SAPlogon2010!',
+                'role' => 'superadmin',
+            ],
+
+            // ADMINS
+            [
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'password' => 'admin123',
                 'role' => 'admin',
             ],
+
+            // USERS
             [
-                'name'  => 'Admin Kedua',
-                'email' => 'admin2@example.com',
-                'password' => 'password123',
-                'role' => 'admin',
-            ],
-            [
-                'name'  => 'User A',
-                'email' => 'user1@example.com',
-                'password' => 'password123',
-                'role' => 'user',
-            ],
-            [
-                'name'  => 'User B',
-                'email' => 'user2@example.com',
-                'password' => 'password123',
+                'name' => 'User',
+                'email' => 'user@example.com',
+                'password' => 'user123',
                 'role' => 'user',
             ],
         ];
 
         foreach ($users as $data) {
-            $user = User::firstOrCreate(
+
+            $user = User::updateOrCreate(
                 ['email' => $data['email']],
                 [
                     'name' => $data['name'],
                     'password' => Hash::make($data['password']),
+                    'email_verified_at' => now(),
                 ]
             );
 
-            // Assign role (Spatie)
             $user->syncRoles([$data['role']]);
         }
     }

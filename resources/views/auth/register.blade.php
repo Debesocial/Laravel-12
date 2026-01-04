@@ -1,6 +1,9 @@
 <x-guest-layout>
+    @php
+    $logo = get_setting('app_logo');
+    @endphp
 
-    {{-- Logo & Tagline --}}
+    {{-- Logo & Intro --}}
     <div class="text-center text-primary mb-5">
         <img src="{{ asset('assets/img/logo-2.png') }}" alt="logo" class="maxwidth-200 mx-auto"><br>
         <i class="fs-15 opacity-75">
@@ -78,7 +81,11 @@
                 Already registered? Login here
             </a>
         </div>
-
     </form>
+
+    <div class="text-center text-primary mb-5">
+        {{-- Footer --}}
+        <small class="opacity-50 d-block mt-4"> {{ $footer_text }} </small>
+    </div>
 
 </x-guest-layout>
