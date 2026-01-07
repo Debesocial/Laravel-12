@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\AccessControl;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ class PermissionManagementController extends Controller
         $permissions = Permission::with(['roles', 'creator', 'updater'])->get();
 
         // render view with data
-        return view('pages.superadmin.permissions', compact('permissions'));
+        return view('pages.access_control.permissions', compact('permissions'));
     }
 
     // create new permission

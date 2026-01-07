@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\SystemSettings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
@@ -14,7 +14,7 @@ public function index(Request $request)
 
     if (!File::exists($logFile)) {
         $content = ["Log file tidak ditemukan."];
-        return view('pages.superadmin.error-logs', compact('content'));
+        return view('pages.system_settings.error-logs', compact('content'));
     }
 
     $logs = explode("\n", File::get($logFile));
@@ -34,7 +34,7 @@ public function index(Request $request)
     $offset = ($page - 1) * $perPage;
     $content = array_slice($logs, $offset, $perPage);
 
-    return view('pages.superadmin.error-logs', compact('content'));
+    return view('pages.system_settings.error-logs', compact('content'));
 }
 
 

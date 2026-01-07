@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\AccessControl;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class RoleManagementController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('pages.superadmin.roles', compact('roles', 'permissions'));
+        return view('pages.access_control.roles', compact('roles', 'permissions'));
     }
 
     public function store(Request $request)

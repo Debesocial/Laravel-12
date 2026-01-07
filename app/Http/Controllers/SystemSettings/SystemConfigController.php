@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\SystemSettings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ class SystemConfigController extends Controller
 {
     public function index()
     {
-        return view('pages.superadmin.system-config');
+        return view('pages.system_settings.system-config');
     }
 
     public function update(Request $request)

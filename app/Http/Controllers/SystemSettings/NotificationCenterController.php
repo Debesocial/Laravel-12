@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\SystemSettings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class NotificationCenterController extends Controller
     {
         $notifications = Notification::orderByDesc('created_at')->get();
 
-        return view('pages.superadmin.notification-center', compact('notifications'));
+        return view('pages.system_settings.notification-center', compact('notifications'));
     }
 
     /**

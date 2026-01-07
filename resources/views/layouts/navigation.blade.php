@@ -16,120 +16,93 @@
                 @endcan
 
                 <hr>
-                {{-- SYSTEM TOOLS (KHUSUS SUPERADMIN) --}}
+                {{-- SYSTEM CONFIGURATION (KHUSUS SUPERADMIN) --}}
                 @role('superadmin')
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="menu-icon bi bi-sliders"></i>
-                        <span class="menu-name">System Tools</span>
+                        <span class="menu-name">System Settings</span>
                     </a>
                     <div class="dropdown-menu">
-
                         <div class="nav-item">
                             <a href="{{ route('system-config.update') }}" class="nav-link">
-                                <i class="menu-icon bi bi-sliders me-2"></i>
+                                <i class="menu-icon bi bi-gear me-2"></i>
                                 <span class="menu-name">System Config</span>
                             </a>
                         </div>
-
                         <div class="nav-item">
                             <a class="nav-link" href="{{ route('session-manager') }}">
-                                <i class="menu-icon bi bi-sliders me-2"></i>
+                                <i class="menu-icon bi bi-clock-history me-2"></i>
                                 <span class="menu-name">Session Manager</span>
                             </a>
                         </div>
-
                         <div class="nav-item">
                             <a href="{{ route('resource-monitoring') }}" class="nav-link">
-                                <i class="menu-icon bi bi-sliders me-2"></i>
+                                <i class="menu-icon bi bi-bar-chart me-2"></i>
                                 <span class="menu-name">Resource Monitor</span>
                             </a>
                         </div>
-
-                        <!-- <div class="nav-item">
-                            <a href="{{ route('notification-center.index') }}" class="nav-link">
-                                <i class="menu-icon bi bi-sliders me-2"></i>
-                                <span class="menu-name">Notification Center</span>
+                        <div class="nav-item position-relative">
+                            <a href="{{ route('error-logs') }}" class="nav-link">
+                                <i class="menu-icon bi bi-exclamation-triangle me-2"></i>
+                                <span class="menu-name">Error Log</span>
                             </a>
-                        </div> -->
+                        </div>
                     </div>
                 </li>
-                @endrole
 
-                {{-- SYSTEM LOGS (KHUSUS SUPERADMIN) --}}
-                @role('superadmin')
+                {{-- ACCESS CONTROL (KHUSUS SUPERADMIN) --}}
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="menu-icon bi bi-journal-text"></i>
-                        <span class="menu-name">System Logs</span>
+                        <span class="menu-name">Access Control</span>
                     </a>
                     <div class="dropdown-menu">
-
-                        @can('view action logs')
                         <div class="nav-item">
                             <a href="{{ route('action-logs') }}" class="nav-link">
                                 <i class="menu-icon bi bi-journal-text me-2"></i>
                                 <span class="menu-name">Action Log</span>
                             </a>
                         </div>
-                        @endcan
-
-                        @can('view error logs')
-                        <div class="nav-item position-relative">
-                            <a href="{{ route('error-logs') }}" class="nav-link">
-                                <i class="menu-icon bi bi-bug me-2"></i>
-                                <span class="menu-name">Error Log</span>
-                                @if(isset($errorCount) && $errorCount > 0)
-                                <span class="badge rounded-pill bg-danger ms-auto">{{ $errorCount }}</span>
-                                @endif
-                            </a>
-                        </div>
-                        @endcan
-
-                    </div>
-                </li>
-                @endrole
-
-                {{-- ROLES & PERMISSIONS (KHUSUS SUPERADMIN sesuai gambar) --}}
-                @role('superadmin')
-                <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="menu-icon bi bi-gear"></i>
-                        <span class="menu-name">Roles & Permissions</span>
-                    </a>
-                    <div class="dropdown-menu">
-
-                        @can('manage roles')
                         <div class="nav-item">
                             <a href="{{ route('roles') }}" class="nav-link">
                                 <i class="menu-icon bi bi-people"></i>
                                 <span class="menu-name">Roles</span>
                             </a>
                         </div>
-                        @endcan
-
-                        @can('manage permissions')
                         <div class="nav-item">
                             <a href="{{ route('permissions') }}" class="nav-link">
                                 <i class="menu-icon bi bi-key"></i>
                                 <span class="menu-name">Permissions</span>
                             </a>
                         </div>
-                        @endcan
-
+                        <div class="nav-item">
+                            <a href="{{ route('users') }}" class="nav-link">
+                                <i class="menu-icon bi bi-person-check"></i>
+                                <span class="menu-name">User Management</span>
+                            </a>
+                        </div>
                     </div>
                 </li>
                 @endrole
 
-                {{-- USER MANAGEMENT → hanya superadmin & admin --}}
-                @can('manage users')
-                <li class="nav-item">
-                    <a href="{{ route('users') }}" class="nav-link">
-                        <i class="menu-icon bi bi-person-check"></i>
-                        <span class="menu-name">User Management</span>
+                {{-- ACCESS CONTROL (KHUSUS ADMIN) --}}
+                @role('admin')
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="menu-icon bi bi-journal-text"></i>
+                        <span class="menu-name">Access Control</span>
                     </a>
+                    <div class="dropdown-menu">
+                        <div class="nav-item">
+                            <a href="{{ route('users') }}" class="nav-link">
+                                <i class="menu-icon bi bi-person-check"></i>
+                                <span class="menu-name">User Management</span>
+                            </a>
+                        </div>
+                    </div>
                 </li>
-                @endcan
+                @endrole
 
                 {{-- LOGOUT (bebas akses) --}}
                 <li class="nav-item">
@@ -161,6 +134,29 @@
                     });
                 }
                 </script>
+
+                @if(session()->has('impersonator_id'))
+                <div class="alert alert-warning text-center rounded mt-3">
+                    {{ __('You are acting on behalf of another user. Please proceed with caution.') }}
+
+                    <form id="stop-impersonate-form" method="POST" action="{{ route('impersonate.stop') }}"
+                        class="d-inline">
+                        @csrf
+                        <button type="button" id="stop-impersonate-btn" class="form-control btn btn-sm btn-dark mt-2">
+                            {{ __('Return to Superadmin') }}
+                        </button>
+                    </form>
+                </div>
+                @endif
+                <script>
+                document.getElementById('stop-impersonate-btn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('stop-impersonate-form').submit();
+                });
+                </script>
+
+
+
             </ul>
 
             <div class=" mt-auto "></div>

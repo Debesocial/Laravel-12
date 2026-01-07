@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Shared;
+namespace App\Http\Controllers\AccessControl;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class UserManagementController extends Controller
                     ->orderBy('name')
                     ->get();
 
-        return view('pages.shared.users', compact('users', 'roles'));
+        return view('pages.access_control.users', compact('users', 'roles'));
     }
 
 

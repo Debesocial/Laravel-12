@@ -23,7 +23,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => 'admin123',
+                'password' => 'SAPlogon2010!',
                 'role' => 'admin',
             ],
 
@@ -31,7 +31,7 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'User',
                 'email' => 'user@example.com',
-                'password' => 'user123',
+                'password' => 'SAPlogon2010!',
                 'role' => 'user',
             ],
         ];

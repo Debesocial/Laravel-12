@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\SystemSettings;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class SessionManagerController extends Controller
             ->orderByDesc('sessions.last_activity')
             ->get();
 
-        return view('pages.superadmin.session-manager', compact('sessions'));
+        return view('pages.system_settings.session-manager', compact('sessions'));
     }
 
     public function destroy($id)

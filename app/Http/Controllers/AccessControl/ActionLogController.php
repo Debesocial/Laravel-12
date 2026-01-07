@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\superadmin;
+namespace App\Http\Controllers\AccessControl;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -66,6 +66,6 @@ class ActionLogController extends Controller
         $actionlogs = $query->paginate(50)->withQueryString();
 
         // kirim ke view
-        return view('pages.superadmin.action-logs', compact('actionlogs'));
+        return view('pages.access_control.action-logs', compact('actionlogs'));
     }
 }

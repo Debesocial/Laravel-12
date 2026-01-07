@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Superadmin;
+namespace App\Http\Controllers\SystemSettings;
 
 use App\Http\Controllers\Controller;
 use App\Services\Monitoring\SystemMonitoringService;
@@ -45,7 +45,7 @@ class ResourceMonitoringController extends Controller
         ];
 
         // Kirim data ke view
-        return view('pages.superadmin.resource-monitoring', [
+        return view('pages.system_settings.resource-monitoring', [
             'cpu'       => $data['cpu'],
             'ram'       => $data['ram'],
             'disk'      => $data['disk'],

@@ -65,7 +65,7 @@
 
                                 <tbody>
                                     @forelse ($users as $user)
-                                    <tr>
+                                    @if ( auth()->user()->hasRole('superadmin') || ! $user->hasRole('superadmin') ) <tr>
                                         {{-- toggle status --}}
                                         <td>
                                             <div class="form-check form-switch d-flex align-items-center gap-2">
@@ -83,11 +83,9 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>
-                                            @forelse ($user->roles as $role)
+                                            @foreach ($user->roles as $role)
                                             <span class="badge bg-secondary">{{ $role->name }}</span>
-                                            @empty
-                                            <span>-</span>
-                                            @endforelse
+                                            @endforeach
                                         </td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>{{ $user->creator->email ?? 'System' }}</td>
@@ -96,27 +94,42 @@
 
                                         {{-- ACTION --}}
                                         <td class="text-end">
+                                            <div class="d-inline-flex align-items-center gap-2">
+                                                {{-- IMPERSONATE (SUPER ADMIN ONLY) --}}
+                                                @role('superadmin')
+                                                @if(auth()->id() !== $user->id && ! $user->hasRole('superadmin'))
+                                                <form method="POST" action="{{ route('impersonate.start', $user->id) }}"
+                                                    class="d-inline">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-warning btn-sm rounded-pill px-3">
+                                                        {{ __('Impersonate') }}
+                                                    </button>
+                                                </form>
+                                                @endif
+                                                @endrole
 
-                                            {{-- Edit --}}
-                                            <button class="btn btn-link btn-edit" data-id="{{ $user->id }}"
-                                                data-name="{{ $user->name }}" data-email="{{ $user->email }}"
-                                                data-roles='@json($user->roles->pluck("id")->toArray())'
-                                                data-created="{{ $user->created_at }}"
-                                                data-created-by="{{ $user->creator->email ?? 'System' }}"
-                                                data-updated-at="{{ $user->updated_at ?? '-' }}"
-                                                data-updated-by="{{ $user->updater->email ?? '-' }}"
-                                                data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
+                                                {{-- Edit --}}
+                                                <button class="btn btn-link btn-edit" data-id="{{ $user->id }}"
+                                                    data-name="{{ $user->name }}" data-email="{{ $user->email }}"
+                                                    data-roles='@json($user->roles->pluck("id")->toArray())'
+                                                    data-created="{{ $user->created_at }}"
+                                                    data-created-by="{{ $user->creator->email ?? 'System' }}"
+                                                    data-updated-at="{{ $user->updated_at ?? '-' }}"
+                                                    data-updated-by="{{ $user->updater->email ?? '-' }}"
+                                                    data-bs-toggle="modal" data-bs-target="#editUserModal">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
 
-                                            {{-- Delete/Archive --}}
-                                            <button class="btn btn-link text-danger btn-delete"
-                                                data-id="{{ $user->id }}" data-name="{{ $user->name }}">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-
+                                                {{-- Delete/Archive --}}
+                                                <button class="btn btn-link text-danger btn-delete"
+                                                    data-id="{{ $user->id }}" data-name="{{ $user->name }}">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
+                                    @endif
                                     @empty
                                     <tr>
                                         <td colspan="9" class="text-center text-muted">
