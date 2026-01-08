@@ -67,6 +67,6 @@ Swal.fire({
     text: 'Your profile has been successfully updated.',
     showConfirmButton: false,
     timer: 1200
-})
+}).then(() => location.reload());
 </script>
 @endif

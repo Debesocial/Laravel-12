@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\SystemSettings;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use App\Services\Monitoring\SystemMonitoringService;
 
 class ResourceMonitoringController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view resource monitoring');
+}
+
     public function index(SystemMonitoringService $monitor)
     {
         // Ambil data dari service

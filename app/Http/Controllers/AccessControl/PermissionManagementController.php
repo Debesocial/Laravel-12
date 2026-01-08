@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AccessControl;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
@@ -11,6 +11,12 @@ use App\Models\Permission;
 
 class PermissionManagementController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view permissions')->only(['index']);
+    $this->middleware('permission:manage permissions')->except(['index']);
+}
+
     // show all permissions with relations
     public function index()
     {

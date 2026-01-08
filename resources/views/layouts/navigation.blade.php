@@ -16,95 +16,116 @@
                 @endcan
 
                 <hr>
-                {{-- SYSTEM CONFIGURATION (KHUSUS SUPERADMIN) --}}
-                @role('superadmin')
+
+                {{-- SYSTEM SETTINGS --}}
+                @canany([
+                'view system config',
+                'view sessions',
+                'view resource monitoring',
+                'view error logs'
+                ])
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="menu-icon bi bi-sliders"></i>
                         <span class="menu-name">System Settings</span>
                     </a>
                     <div class="dropdown-menu">
+
+                        @can('view system config')
                         <div class="nav-item">
-                            <a href="{{ route('system-config.update') }}" class="nav-link">
+                            <a href="{{ route('system-config') }}" class="nav-link">
                                 <i class="menu-icon bi bi-gear me-2"></i>
                                 <span class="menu-name">System Config</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('view sessions')
                         <div class="nav-item">
-                            <a class="nav-link" href="{{ route('session-manager') }}">
+                            <a href="{{ route('session-manager') }}" class="nav-link">
                                 <i class="menu-icon bi bi-clock-history me-2"></i>
                                 <span class="menu-name">Session Manager</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('view resource monitoring')
                         <div class="nav-item">
                             <a href="{{ route('resource-monitoring') }}" class="nav-link">
                                 <i class="menu-icon bi bi-bar-chart me-2"></i>
                                 <span class="menu-name">Resource Monitor</span>
                             </a>
                         </div>
-                        <div class="nav-item position-relative">
+                        @endcan
+
+                        @can('view error logs')
+                        <div class="nav-item">
                             <a href="{{ route('error-logs') }}" class="nav-link">
                                 <i class="menu-icon bi bi-exclamation-triangle me-2"></i>
                                 <span class="menu-name">Error Log</span>
                             </a>
                         </div>
+                        @endcan
+
                     </div>
                 </li>
+                @endcanany
 
-                {{-- ACCESS CONTROL (KHUSUS SUPERADMIN) --}}
+                {{-- ACCESS CONTROL --}}
+                @canany([
+                'view users',
+                'view roles',
+                'view permissions',
+                'view action logs'
+                ])
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="menu-icon bi bi-journal-text"></i>
                         <span class="menu-name">Access Control</span>
                     </a>
                     <div class="dropdown-menu">
+
+                        @can('view action logs')
                         <div class="nav-item">
                             <a href="{{ route('action-logs') }}" class="nav-link">
                                 <i class="menu-icon bi bi-journal-text me-2"></i>
                                 <span class="menu-name">Action Log</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('view roles')
                         <div class="nav-item">
                             <a href="{{ route('roles') }}" class="nav-link">
                                 <i class="menu-icon bi bi-people"></i>
                                 <span class="menu-name">Roles</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('view permissions')
                         <div class="nav-item">
                             <a href="{{ route('permissions') }}" class="nav-link">
                                 <i class="menu-icon bi bi-key"></i>
                                 <span class="menu-name">Permissions</span>
                             </a>
                         </div>
+                        @endcan
+
+                        @can('view users')
                         <div class="nav-item">
                             <a href="{{ route('users') }}" class="nav-link">
                                 <i class="menu-icon bi bi-person-check"></i>
                                 <span class="menu-name">User Management</span>
                             </a>
                         </div>
+                        @endcan
+
                     </div>
                 </li>
-                @endrole
+                @endcanany
 
-                {{-- ACCESS CONTROL (KHUSUS ADMIN) --}}
-                @role('admin')
-                <li class="nav-item dropdown">
-                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="menu-icon bi bi-journal-text"></i>
-                        <span class="menu-name">Access Control</span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="nav-item">
-                            <a href="{{ route('users') }}" class="nav-link">
-                                <i class="menu-icon bi bi-person-check"></i>
-                                <span class="menu-name">User Management</span>
-                            </a>
-                        </div>
-                    </div>
-                </li>
-                @endrole
-
-                {{-- LOGOUT (bebas akses) --}}
+                {{-- LOGOUT --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center text-danger"
                         onclick="confirmLogout();">
@@ -112,9 +133,11 @@
                         <span class="menu-name">Logout</span>
                     </a>
                 </li>
+
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
+
                 <script>
                 function confirmLogout() {
                     Swal.fire({
@@ -126,7 +149,6 @@
                         cancelButtonColor: '#ffffff',
                         confirmButtonText: 'Yes, Logout',
                         cancelButtonText: 'Cancel',
-                        reverseButtons: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             document.getElementById('logout-form').submit();
@@ -135,6 +157,7 @@
                 }
                 </script>
 
+                {{-- IMPERSONATE WARNING --}}
                 @if(session()->has('impersonator_id'))
                 <div class="alert alert-warning text-center rounded mt-3">
                     {{ __('You are acting on behalf of another user. Please proceed with caution.') }}
@@ -143,19 +166,18 @@
                         class="d-inline">
                         @csrf
                         <button type="button" id="stop-impersonate-btn" class="form-control btn btn-sm btn-dark mt-2">
-                            {{ __('Return to Superadmin') }}
+                            {{ __('Return to Original Account') }}
                         </button>
                     </form>
                 </div>
                 @endif
+
                 <script>
                 document.getElementById('stop-impersonate-btn')?.addEventListener('click', function(e) {
                     e.preventDefault();
                     document.getElementById('stop-impersonate-form').submit();
                 });
                 </script>
-
-
 
             </ul>
 

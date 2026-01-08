@@ -70,6 +70,6 @@ Swal.fire({
     text: 'Your password successfully updated.',
     showConfirmButton: false,
     timer: 1200
-});
+}).then(() => location.reload());
 </script>
 @endif

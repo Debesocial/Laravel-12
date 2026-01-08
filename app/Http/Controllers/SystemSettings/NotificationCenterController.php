@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers\SystemSettings;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Notification;
 
 class NotificationCenterController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view notifications')->only(['index']);
+    $this->middleware('permission:manage notifications')->except(['index']);
+}
+
     /**
      * =====================================================
      * INDEX
