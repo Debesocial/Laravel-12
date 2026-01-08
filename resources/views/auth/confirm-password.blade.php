@@ -1,27 +1,36 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+
+    {{-- Logo & Informasi Halaman --}}
+    <div class="text-center text-primary mb-4">
+        <img src="{{ asset('assets/img/logo-2.png') }}" alt="logo" class="maxwidth-200 mx-auto"><br>
+        <p class="opacity-75 fs-6">
+            This is a secure area. Please confirm your password to continue.
+        </p>
     </div>
 
+    {{-- Form Konfirmasi Password --}}
     <form method="POST" action="{{ route('password.confirm') }}">
         @csrf
 
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
+        {{-- Input Password --}}
+        <div class="form-floating mb-4">
+            <input type="password" id="password" name="password"
+                class="form-control @error('password') is-invalid @enderror" placeholder="Password" required
+                autocomplete="current-password">
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <label for="password">Password</label>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            {{-- Pesan Error Validasi --}}
+            @error('password')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
+        {{-- Tombol Submit --}}
+        <button type="submit" class="btn btn-lg btn-primary theme-black w-100">
+            Confirm
+        </button>
+
     </form>
+
 </x-guest-layout>
