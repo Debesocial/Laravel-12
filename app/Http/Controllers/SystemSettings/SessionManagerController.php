@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\SystemSettings;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class SessionManagerController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view sessions')->only(['index']);
+    $this->middleware('permission:manage sessions')->only(['destroy']);
+}
+
     public function index(Request $request)
     {
         $sessions = DB::table('sessions')

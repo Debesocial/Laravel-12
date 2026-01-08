@@ -10,84 +10,101 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
+        /*
+        |--------------------------------------------------------------------------
+        | PERMISSIONS (VIEW vs MANAGE)
+        |--------------------------------------------------------------------------
+        */
         $permissions = [
-            // Dashboard & General
+
+            // Dashboard
             'view dashboard',
-            'view reports',
 
-            // User & Security
-            'manage users',             // SUPERADMIN + ADMIN
-            'manage roles',             // SUPERADMIN ONLY
-            'manage permissions',       // SUPERADMIN ONLY
-            'manage sessions',          // SUPERADMIN ONLY
+            // User Management
+            'view users',
+            'manage users',
 
-            // Logs & Monitoring
-            'view action logs',          // SUPERADMIN ONLY
-            'view error logs',           // SUPERADMIN ONLY
+            // Role Management
+            'view roles',
+            'manage roles',
 
-            // System Configuration
-            'system configuration',     // SUPERADMIN ONLY
+            // Permission Management
+            'view permissions',
+            'manage permissions',
 
-            // 🔥 Backup & Maintenance
-            'backup & restore',          // SUPERADMIN ONLY
-            'manage retention',          // SUPERADMIN ONLY
-            'manage notification',       // SUPERADMIN ONLY
+            // Action & Error Logs
+            'view action logs',
+            'view error logs',
+            'manage error logs',
+
+            // System Settings
+            'view system config',
+            'manage system config',
+
+            // Session Manager
+            'view sessions',
+            'manage sessions',
+
+            // Resource Monitoring
+            'view resource monitoring',
+
+            // Notification Center
+            'view notifications',
+            'manage notifications',
+
+            // Impersonate
+            'impersonate users',
         ];
 
-        /**
-         * =====================================================
-         * Create / Update Permissions
-         * =====================================================
-         */
+        /*
+        |--------------------------------------------------------------------------
+        | CREATE / UPDATE PERMISSIONS
+        |--------------------------------------------------------------------------
+        */
         foreach ($permissions as $permission) {
             Permission::updateOrCreate(
-                ['name' => $permission, 'guard_name' => 'web'],
-                ['is_active' => 1]
+                [
+                    'name' => $permission,
+                    'guard_name' => 'web',
+                ],
+                [
+                    'is_active' => 1,
+                ]
             );
         }
 
-        /**
-         * =====================================================
-         * Create Roles
-         * =====================================================
-         */
+        /*
+        |--------------------------------------------------------------------------
+        | ROLES
+        |--------------------------------------------------------------------------
+        */
         $superadmin = Role::updateOrCreate(['name' => 'superadmin', 'guard_name' => 'web']);
         $admin      = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $user       = Role::updateOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
         /*
         |--------------------------------------------------------------------------
-        | DISTRIBUSI PERMISSION
+        | ROLE → PERMISSION MAPPING
         |--------------------------------------------------------------------------
         */
 
-        // 🟣 SUPERADMIN — Full Control
-        $superadmin->syncPermissions([
-            'view dashboard',
-            'view reports',
-            'manage users',
-            'manage roles',
-            'manage permissions',
-            'manage sessions',
-            'view action logs',
-            'view error logs',
-            'system configuration',
-            'backup & restore',
-            'manage retention',
-            'manage notification',
-        ]);
+        // 🟣 SUPERADMIN — FULL ACCESS
+        $superadmin->syncPermissions($permissions);
 
-        // 🔵 ADMIN — Operasional
+        // 🔵 ADMIN — OPERASIONAL (NO SYSTEM CORE)
         $admin->syncPermissions([
             'view dashboard',
-            'view reports',
+
+            'view users',
             'manage users',
+
+            'view notifications',
+            'manage notifications',
         ]);
 
-        // 🟢 USER — Basic Access
+        // 🟢 USER — READ ONLY
         $user->syncPermissions([
             'view dashboard',
-            'view reports',
         ]);
     }
 }

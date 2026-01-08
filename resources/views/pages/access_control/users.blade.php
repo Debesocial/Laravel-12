@@ -14,10 +14,12 @@
                                     {{ __('Manage users, assign roles, and control access within the system.') }}
                                 </small>
                             </div>
+                            @can('manage users')
                             <button class="btn btn-primary mt-3 px-3" data-bs-toggle="modal"
                                 data-bs-target="#addUserModal">
                                 &emsp;+ {{ __('Add User') }}&emsp;
                             </button>
+                            @endcan
                         </div>
                     </div>
 
@@ -27,7 +29,9 @@
                             <table id="datatables" class="table table-hover table-bordered w-100 nowrap mb-0">
                                 <thead>
                                     <tr>
+                                        @can('manage users')
                                         <th class="text-wrap">{{ __('Status') }}</th>
+                                        @endcan
                                         <th class="text-wrap">{{ __('User Name') }}</th>
                                         <th class="text-wrap">{{ __('Email') }}</th>
                                         <th class="text-wrap">{{ __('Roles') }}</th>
@@ -35,11 +39,14 @@
                                         <th class="text-wrap" data-hide="audit">{{ __('Created By') }}</th>
                                         <th class="text-wrap" data-hide="audit">{{ __('Last Updated At') }}</th>
                                         <th class="text-wrap" data-hide="audit">{{ __('Last Updated By') }}</th>
+                                        @can('manage users')
                                         <th class="text-wrap text-end">{{ __('Action') }}</th>
+                                        @endcan
                                     </tr>
 
                                     {{-- filter --}}
                                     <tr class="filter-row">
+                                        @can('manage users')
                                         <th>
                                             <select class="form-select form-select-sm">
                                                 <option value="">{{ __('All') }}</option>
@@ -47,6 +54,7 @@
                                                 <option value="inactive">{{ __('Inactive') }}</option>
                                             </select>
                                         </th>
+                                        @endcan
                                         <th><input class="form-control form-control-sm"
                                                 placeholder="{{ __('Search Name') }}"></th>
                                         <th><input class="form-control form-control-sm"
@@ -59,7 +67,9 @@
                                         <th><input type="date" class="form-control form-control-sm"></th>
                                         <th><input class="form-control form-control-sm"
                                                 placeholder="{{ __('Updated By') }}"></th>
+                                        @can('manage users')
                                         <th></th>
+                                        @endcan
                                     </tr>
                                 </thead>
 
@@ -67,6 +77,7 @@
                                     @forelse ($users as $user)
                                     @if ( auth()->user()->hasRole('superadmin') || ! $user->hasRole('superadmin') ) <tr>
                                         {{-- toggle status --}}
+                                        @can('manage users')
                                         <td>
                                             <div class="form-check form-switch d-flex align-items-center gap-2">
                                                 <input class="form-check-input user-toggle" type="checkbox"
@@ -78,6 +89,7 @@
                                                 </span>
                                             </div>
                                         </td>
+                                        @endcan
 
                                         {{-- tabel data --}}
                                         <td>{{ $user->name }}</td>
@@ -92,6 +104,7 @@
                                         <td>{{ $user->updated_at }}</td>
                                         <td>{{ $user->updater->email ?? '-' }}</td>
 
+                                        @can('manage users')
                                         {{-- ACTION --}}
                                         <td class="text-end">
                                             <div class="d-inline-flex align-items-center gap-2">
@@ -128,6 +141,7 @@
                                                 </button>
                                             </div>
                                         </td>
+                                        @endcan
                                     </tr>
                                     @endif
                                     @empty

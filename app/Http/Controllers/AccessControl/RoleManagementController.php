@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AccessControl;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +11,12 @@ use App\Models\Permission;
 
 class RoleManagementController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view roles')->only(['index']);
+    $this->middleware('permission:manage roles')->except(['index']);
+}
+
     public function index()
     {
         $roles = Role::with(['permissions', 'creator', 'updater'])->get();

@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\SystemSettings;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 
 class ErrorLogController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view error logs')->only(['index']);
+    $this->middleware('permission:manage error logs')->only(['download', 'clear']);
+}
+
 public function index(Request $request)
 {
     $logFile = storage_path('logs/laravel.log');

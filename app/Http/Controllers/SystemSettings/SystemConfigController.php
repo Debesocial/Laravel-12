@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\SystemSettings;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
 class SystemConfigController extends Controller
 {
+    public function __construct()
+{
+    $this->middleware('permission:view system config')->only(['index']);
+    $this->middleware('permission:manage system config')->only(['update']);
+}
+
     public function index()
     {
         return view('pages.system_settings.system-config');

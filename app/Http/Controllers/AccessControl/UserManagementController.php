@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\AccessControl;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +12,11 @@ use App\Models\User;
 class UserManagementController extends Controller
 {
 
+    public function __construct()
+{
+    $this->middleware('permission:view users')->only(['index']);
+    $this->middleware('permission:manage users')->except(['index']);
+}
     /**
      * INDEX — Menampilkan daftar user & role (untuk dropdown)
      */
