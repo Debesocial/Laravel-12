@@ -2,7 +2,6 @@
     <div class="container-fluid mt-2" id="main-content">
         <div class="row gx-3 gx-lg-4">
             <div class="col-12">
-                <!-- balance -->
                 <div class="card rounded adminuiux-card text-white bg-dark overflow-hidden mb-3 mb-lg-4">
                     <div class="card-body">
                         <h1 class="display-2 fw-medium mb-1">Lorem Ipsum</h1>
@@ -25,7 +24,6 @@
 
                 <div class="row gx-3 gx-lg-4">
                     <div class="col-12 col-md-6 col-lg-4">
-                        <!-- top recent transactions -->
                         <div class="card adminuiux-card mb-3 mb-lg-4">
                             <div class="card-body">
                                 <div class="row gx-3 align-items-center">
@@ -106,7 +104,6 @@
                     </div>
 
                     <div class="col-12 col-lg-4">
-                        <!-- summary -->
                         <div class="row gx-3 gx-lg-4">
                             @foreach(range(1,4) as $item)
                             <div class="col-6 col-sm-6 col-lg-6 mb-3 mb-lg-4">
@@ -169,9 +166,7 @@
                             </div>
                         </div>
                     </div>
-
-                </div> <!-- row end -->
-
+                </div>
             </div>
         </div>
     </div>

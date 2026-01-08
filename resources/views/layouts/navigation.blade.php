@@ -1,10 +1,11 @@
 <div class="adminuiux-wrap">
-    <!-- Standard sidebar -->
+    {{-- Standard sidebar --}}
     <div class="adminuiux-sidebar shadow-sm">
         <div class="adminuiux-sidebar-inner">
             <ul class="nav flex-column menu-active-line mt-3">
 
-                <!-- DASHBOARD -->
+                {{-- DASHBOARD --}}
+                @can('view dashboard')
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}"
                         class="nav-link d-flex align-items-center {{ request()->routeIs('dashboard') ? 'active' : '' }}">
@@ -12,53 +13,98 @@
                         <span class="menu-name">Dashboard</span>
                     </a>
                 </li>
+                @endcan
+
                 <hr>
-                <!-- SYSTEM CONFIGURATION -->
+                {{-- SYSTEM CONFIGURATION (KHUSUS SUPERADMIN) --}}
+                @role('superadmin')
                 <li class="nav-item dropdown">
                     <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="menu-icon bi bi-gear"></i>
-                        <span class="menu-name">Configuration</span>
+                        <i class="menu-icon bi bi-sliders"></i>
+                        <span class="menu-name">System Settings</span>
                     </a>
                     <div class="dropdown-menu">
+                        <div class="nav-item">
+                            <a href="{{ route('system-config.update') }}" class="nav-link">
+                                <i class="menu-icon bi bi-gear me-2"></i>
+                                <span class="menu-name">System Config</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a class="nav-link" href="{{ route('session-manager') }}">
+                                <i class="menu-icon bi bi-clock-history me-2"></i>
+                                <span class="menu-name">Session Manager</span>
+                            </a>
+                        </div>
+                        <div class="nav-item">
+                            <a href="{{ route('resource-monitoring') }}" class="nav-link">
+                                <i class="menu-icon bi bi-bar-chart me-2"></i>
+                                <span class="menu-name">Resource Monitor</span>
+                            </a>
+                        </div>
+                        <div class="nav-item position-relative">
+                            <a href="{{ route('error-logs') }}" class="nav-link">
+                                <i class="menu-icon bi bi-exclamation-triangle me-2"></i>
+                                <span class="menu-name">Error Log</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+
+                {{-- ACCESS CONTROL (KHUSUS SUPERADMIN) --}}
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="menu-icon bi bi-journal-text"></i>
+                        <span class="menu-name">Access Control</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="nav-item">
+                            <a href="{{ route('action-logs') }}" class="nav-link">
+                                <i class="menu-icon bi bi-journal-text me-2"></i>
+                                <span class="menu-name">Action Log</span>
+                            </a>
+                        </div>
                         <div class="nav-item">
                             <a href="{{ route('roles') }}" class="nav-link">
                                 <i class="menu-icon bi bi-people"></i>
                                 <span class="menu-name">Roles</span>
                             </a>
                         </div>
-
                         <div class="nav-item">
                             <a href="{{ route('permissions') }}" class="nav-link">
                                 <i class="menu-icon bi bi-key"></i>
                                 <span class="menu-name">Permissions</span>
                             </a>
                         </div>
-
                         <div class="nav-item">
-                            <a href="{{ route('assign') }}" class="nav-link">
+                            <a href="{{ route('users') }}" class="nav-link">
                                 <i class="menu-icon bi bi-person-check"></i>
-                                <span class="menu-name">User Assignment</span>
+                                <span class="menu-name">User Management</span>
                             </a>
                         </div>
                     </div>
                 </li>
-                <!-- ACTION LOG -->
-                <li class="nav-item">
-                    <a href="{{ route('action-logs') }}"
-                        class="nav-link d-flex align-items-center {{ request()->routeIs('action-logs') ? 'active' : '' }}">
-                        <i class="menu-icon bi bi-journal-text me-2"></i>
-                        <span class="menu-name">Action Log</span>
+                @endrole
+
+                {{-- ACCESS CONTROL (KHUSUS ADMIN) --}}
+                @role('admin')
+                <li class="nav-item dropdown">
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="menu-icon bi bi-journal-text"></i>
+                        <span class="menu-name">Access Control</span>
                     </a>
+                    <div class="dropdown-menu">
+                        <div class="nav-item">
+                            <a href="{{ route('users') }}" class="nav-link">
+                                <i class="menu-icon bi bi-person-check"></i>
+                                <span class="menu-name">User Management</span>
+                            </a>
+                        </div>
+                    </div>
                 </li>
-                <!-- REPORT -->
-                <!-- <li class="nav-item">
-                    <a href=""
-                        class="nav-link d-flex align-items-center {{ request()->routeIs('reports') ? 'active' : '' }}">
-                        <i class="menu-icon bi bi-file-earmark-text me-2"></i>
-                        <span class="menu-name">Report</span>
-                    </a>
-                </li> -->
-                <!-- LOGOUT -->
+                @endrole
+
+                {{-- LOGOUT (bebas akses) --}}
                 <li class="nav-item">
                     <a href="javascript:void(0)" class="nav-link d-flex align-items-center text-danger"
                         onclick="confirmLogout();">
@@ -76,11 +122,11 @@
                         text: 'Are you sure you want to log out from your session?',
                         icon: 'warning',
                         showCancelButton: true,
-                        confirmButtonColor: '#1e1e1e', // black solid button
-                        cancelButtonColor: '#ffffff', // background transparent (CSS handles border)
+                        confirmButtonColor: '#1e1e1e',
+                        cancelButtonColor: '#ffffff',
                         confirmButtonText: 'Yes, Logout',
                         cancelButtonText: 'Cancel',
-                        reverseButtons: false, // better UX: Cancel on the left
+                        reverseButtons: false,
                     }).then((result) => {
                         if (result.isConfirmed) {
                             document.getElementById('logout-form').submit();
@@ -89,7 +135,30 @@
                 }
                 </script>
 
+                @if(session()->has('impersonator_id'))
+                <div class="alert alert-warning text-center rounded mt-3">
+                    {{ __('You are acting on behalf of another user. Please proceed with caution.') }}
+
+                    <form id="stop-impersonate-form" method="POST" action="{{ route('impersonate.stop') }}"
+                        class="d-inline">
+                        @csrf
+                        <button type="button" id="stop-impersonate-btn" class="form-control btn btn-sm btn-dark mt-2">
+                            {{ __('Return to Superadmin') }}
+                        </button>
+                    </form>
+                </div>
+                @endif
+                <script>
+                document.getElementById('stop-impersonate-btn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('stop-impersonate-form').submit();
+                });
+                </script>
+
+
+
             </ul>
+
             <div class=" mt-auto "></div>
 
             <div class="container mt-3 mt-lg-4" id="main-content" style="margin-top: 0rem !important;">
@@ -99,7 +168,7 @@
                             <div class="col-auto col-md-auto text-center">
                                 <a href="{{ route('profile.edit') }}" class="style-none position-relative d-block">
                                     <figure class="avatar avatar-50 rounded coverimg align-middle">
-                                        <img src="assets/img/profile.png" alt="">
+                                        <img src="{{ asset('assets/img/profile.png') }}" alt="">
                                     </figure>
                                 </a>
                             </div>

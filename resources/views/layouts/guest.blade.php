@@ -8,7 +8,7 @@
     <title>biiproject - Login</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
 
-    <!-- Fonts -->
+    {{-- Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Outfit:wght@600&display=swap"
@@ -28,7 +28,6 @@
         backdrop-filter: blur(0.5px);
     }
 
-    /* ====== Buttons ====== */
     .btn-primary {
         --bs-btn-color: #fff !important;
         --bs-btn-bg: #1e1e1e !important;
@@ -56,7 +55,7 @@
 <body
     class="main-bg main-bg-opac roundedui adminuiux-header-boxed adminuiux-header-transparent adminuiux-sidebar-fill-white adminuiux-sidebar-boxed theme-black bg-gradient-1 scrollup"
     data-theme="theme-black">
-    <!-- page loader -->
+    {{-- page loader --}}
     <div class="pageloader">
         <div class="container h-100">
             <div class="row justify-content-center align-items-center text-center h-100">
@@ -97,7 +96,8 @@
             </div>
         </main>
     </div>
-    <!-- Page Level js -->
+
+    {{-- page js --}}
     <script src="assets/js/mobileux/mobileux-auth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('success'))

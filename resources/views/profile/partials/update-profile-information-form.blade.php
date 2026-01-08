@@ -1,66 +1,72 @@
 <div class="card adminuiux-card mb-4 shadow-sm">
     <div class="card-body">
 
-        {{-- Header Informasi Halaman --}}
+        {{-- page information header --}}
         <h4 class="fw-bold mb-3">Profile Information</h4>
         <p class="text-secondary small mb-4">
-            Update your account's profile information and email address.
+            update your account's profile information and email address
         </p>
 
-        {{-- Form untuk mengirim ulang email verifikasi (disembunyikan, trigger di backend) --}}
+        {{-- form for resending verification email (hidden, triggered in backend) --}}
         <form id="send-verification" method="post" action="{{ route('verification.send') }}" style="display:none;">
             @csrf
         </form>
+        {{-- update profile form --}}
+        <form method="POST" action="{{ route('profile.update') }}" autocomplete="off">
 
-        {{-- Form Update Profile --}}
-        <form method="post" action="{{ route('profile.update') }}">
             @csrf
-            @method('patch')
+            @method('PATCH')
+
+            {{-- anti autofill trap --}}
+            <input type="text" name="fakeuser" style="display:none">
+            <input type="password" name="fakepass" style="display:none">
 
             <div class="row g-3">
 
-                {{-- Input Name --}}
+                {{-- Name --}}
                 <div class="col-12 col-md-6">
-                    <label class="form-label">Name <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                        value="{{ old('name', Auth::user()->name) }}" placeholder="Enter your name" required>
-
-                    {{-- Pesan error jika validasi gagal --}}
-                    @error('name')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <label class="form-label fw-semibold">
+                        {{ __('Name') }} <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" name="name" class="form-control" value="{{ old('name', auth()->user()->name) }}"
+                        placeholder="ex: John Wick" required minlength="3" maxlength="100" pattern="^[a-zA-Z\s]+$"
+                        title="Name must be at least 3 characters and contain letters and spaces only">
                 </div>
 
-                {{-- Input Email --}}
+                {{-- Email --}}
                 <div class="col-12 col-md-6">
-                    <label class="form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                        value="{{ old('email', Auth::user()->email) }}" placeholder="Enter your email" required>
-
-                    {{-- Pesan error jika validasi gagal --}}
-                    @error('email')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <label class="form-label fw-semibold">
+                        {{ __('Email') }} <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" name="email" class="form-control"
+                        value="{{ old('email', auth()->user()->email) }}" placeholder="john@email.com" required
+                        maxlength="150" title="Enter a valid and unique email address">
                 </div>
 
             </div>
 
-            <button class="btn btn-primary mt-3 px-3">Save Changes</button>
+            <button type="submit" class="btn btn-primary mt-3 px-3">
+                {{ __('Save Changes') }}
+            </button>
+
         </form>
+
     </div>
 </div>
 
-{{-- Library SweetAlert --}}
+{{-- sweetalert library --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-{{-- SweetAlert Success - muncul saat profile berhasil diupdate --}}
+{{-- sweetalert success - appears when profile is updated successfully --}}
 @if (session('status') === 'profile-updated')
 <script>
+// profile updated successfully
 Swal.fire({
     icon: 'success',
     title: 'Profile Updated',
     text: 'Your profile has been successfully updated.',
-    confirmButtonColor: '#1e1e1e', // black solid button
+    showConfirmButton: false,
+    timer: 1200
 })
 </script>
 @endif

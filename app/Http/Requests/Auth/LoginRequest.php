@@ -37,43 +37,37 @@ class LoginRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function authenticate(): void
-    {
-        $this->ensureIsNotRateLimited();
+public function authenticate(): void
+{
+    // validasi input
+    $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
-            RateLimiter::hit($this->throttleKey());
-
-            throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
-            ]);
-        }
-
-        RateLimiter::clear($this->throttleKey());
-    }
-
-    /**
-     * Ensure the login request is not rate limited.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
-
-        event(new Lockout($this));
-
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+    if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        RateLimiter::hit($this->throttleKey(), 300); // 300 detik = 5 menit
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
+            'email' => __('The email or password is incorrect.'),
         ]);
     }
+
+    RateLimiter::clear($this->throttleKey());
+}
+
+public function ensureIsNotRateLimited(): void
+{
+    if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) { // 5 percobaan
+        return;
+    }
+
+    $seconds = RateLimiter::availableIn($this->throttleKey());
+
+    throw ValidationException::withMessages([
+        'email' => __('Your account is temporarily locked. Please try again in :seconds seconds.', [
+            'seconds' => $seconds
+        ]),
+    ]);
+}
+
 
     /**
      * Get the rate limiting throttle key for the request.

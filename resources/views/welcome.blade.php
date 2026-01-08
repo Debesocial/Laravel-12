@@ -8,17 +8,12 @@
 
         {{-- Headline Intro --}}
         <h1 class="fw-bold" style="font-family: Outfit, sans-serif; font-size: 32px;">
-            Build, improve, grow
+            {{ $app_tagline1 }}
         </h1>
 
         {{-- Deskripsi Singkat --}}
-        <p class="opacity-75 mb-3 fs-6">
-            Welcome to <b>biiproject</b> — a simple way to explore ideas, build quick prototypes,
-            and improve workflows before full development.
-        </p>
-
-        <p class="opacity-75 mb-4 fs-6">
-            Try the prototyping experience and see how fast you can turn ideas into working concepts.
+        <p class="text-muted" style="white-space: pre-line;">
+            {{ get_setting('app_tagline2') }}
         </p>
 
         {{-- CTA (Login & Register) --}}
@@ -36,13 +31,16 @@
             </a>
             @endif
 
+            {{-- Trial (Auto-hide jika route tidak ada) --}}
+            @if (Route::has('trial'))
+            <a href="{{ route('trial') }}" class="btn btn-lg btn-outline-dark w-100">
+                Free Trial
+            </a>
+            @endif
+
         </div>
 
         {{-- Footer --}}
-        <small class="opacity-50 d-block mt-4">
-            © {{ date('Y') }} biiproject • Build, improve, grow
-        </small>
-
+        <small class="opacity-50 d-block mt-4"> {{ $footer_text }} </small>
     </div>
-
 </x-guest-layout>

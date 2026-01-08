@@ -10,69 +10,84 @@ class RolePermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        /*
-        |--------------------------------------------------------------------------
-        | PERMISSIONS (AKSI)
-        |--------------------------------------------------------------------------
-        */
         $permissions = [
+            // Dashboard & General
             'view dashboard',
-            'manage users',
-            'approve document',
             'view reports',
-            'manage permissions',
-            'manage roles',
 
-            // 📌 Tambahkan yang baru ini
-            'view logs',
+            // User & Security
+            'manage users',             // SUPERADMIN + ADMIN
+            'manage roles',             // SUPERADMIN ONLY
+            'manage permissions',       // SUPERADMIN ONLY
+            'manage sessions',          // SUPERADMIN ONLY
+
+            // Logs & Monitoring
+            'view action logs',          // SUPERADMIN ONLY
+            'view error logs',           // SUPERADMIN ONLY
+
+            // System Configuration
+            'system configuration',     // SUPERADMIN ONLY
+
+            // 🔥 Backup & Maintenance
+            'backup & restore',          // SUPERADMIN ONLY
+            'manage retention',          // SUPERADMIN ONLY
+            'manage notification',       // SUPERADMIN ONLY
         ];
 
+        /**
+         * =====================================================
+         * Create / Update Permissions
+         * =====================================================
+         */
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web',
-            ]);
+            Permission::updateOrCreate(
+                ['name' => $permission, 'guard_name' => 'web'],
+                ['is_active' => 1]
+            );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ROLES (AREA / JABATAN)
-        |--------------------------------------------------------------------------
-        */
-        $admin    = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-        $approver = Role::firstOrCreate(['name' => 'approver', 'guard_name' => 'web']);
-        $manager  = Role::firstOrCreate(['name' => 'manager', 'guard_name' => 'web']);
-        $user     = Role::firstOrCreate(['name' => 'user', 'guard_name' => 'web']);
+        /**
+         * =====================================================
+         * Create Roles
+         * =====================================================
+         */
+        $superadmin = Role::updateOrCreate(['name' => 'superadmin', 'guard_name' => 'web']);
+        $admin      = Role::updateOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $user       = Role::updateOrCreate(['name' => 'user', 'guard_name' => 'web']);
 
         /*
         |--------------------------------------------------------------------------
-        | ASSIGN PERMISSION KE ROLE
+        | DISTRIBUSI PERMISSION
         |--------------------------------------------------------------------------
         */
+
+        // 🟣 SUPERADMIN — Full Control
+        $superadmin->syncPermissions([
+            'view dashboard',
+            'view reports',
+            'manage users',
+            'manage roles',
+            'manage permissions',
+            'manage sessions',
+            'view action logs',
+            'view error logs',
+            'system configuration',
+            'backup & restore',
+            'manage retention',
+            'manage notification',
+        ]);
+
+        // 🔵 ADMIN — Operasional
         $admin->syncPermissions([
             'view dashboard',
+            'view reports',
             'manage users',
-            'approve document',
-            'view reports',
-            'manage permissions',
-            'manage roles',
-
-            // 📌 Tambahkan juga disini
-            'view logs',
         ]);
 
-        $approver->syncPermissions([
-            'view dashboard',
-            'approve document',
-        ]);
-
-        $manager->syncPermissions([
-            'view dashboard',
-            'view reports',
-        ]);
-
+        // 🟢 USER — Basic Access
         $user->syncPermissions([
             'view dashboard',
+            'view reports',
         ]);
     }
 }

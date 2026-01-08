@@ -1,6 +1,9 @@
 <x-guest-layout>
+    @php
+    $logo = get_setting('app_logo');
+    @endphp
 
-    {{-- Logo & Informasi Halaman --}}
+    {{-- Logo & Intro --}}
     <div class="text-center text-primary mb-5">
         <img src="{{ asset('assets/img/logo-2.png') }}" alt="logo" class="maxwidth-200 mx-auto"><br>
         <p class="opacity-75 fs-6">
@@ -39,5 +42,10 @@
             Log Out
         </button>
     </form>
+
+    <div class="text-center text-primary mb-5">
+        {{-- Footer --}}
+        <small class="opacity-50 d-block mt-4"> {{ $footer_text }} </small>
+    </div>
 
 </x-guest-layout>
