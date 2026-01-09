@@ -1,0 +1,11 @@
+{
+    "name": "PersonnelAdministration",
+    "alias": "personneladministration",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PersonnelAdministration\\app\\Providers\\PersonnelAdministrationServiceProvider"
+    ],
+    "files": []
+}

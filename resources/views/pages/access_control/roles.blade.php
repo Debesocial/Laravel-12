@@ -86,11 +86,13 @@
                                         <td>{{ $role->name }}</td>
                                         <td>{{ $role->guard_name }}</td>
                                         <td>
-                                            @forelse ($role->permissions as $permission)
-                                            <span class="badge bg-secondary">{{ $permission->name }}</span>
-                                            @empty
-                                            <span>-</span>
-                                            @endforelse
+                                            <div class="permission-clamp" title="{{ $role->permissions->pluck('name')->join(', ') }}">
+                                                @forelse ($role->permissions as $permission)
+                                                    <span class="badge bg-secondary">{{ $permission->name }}</span>
+                                                @empty
+                                                    <span>-</span>
+                                                @endforelse
+                                            </div>
                                         </td>
                                         <td>{{ $role->created_at }}</td>
                                         <td>{{ $role->creator->email ?? 'System' }}</td>
