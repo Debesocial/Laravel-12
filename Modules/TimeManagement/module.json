@@ -1,0 +1,11 @@
+{
+    "name": "TimeManagement",
+    "alias": "timemanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TimeManagement\\app\\Providers\\TimeManagementServiceProvider"
+    ],
+    "files": []
+}
