@@ -14,47 +14,111 @@ class RolePermissionSeeder extends Seeder
         |--------------------------------------------------------------------------
         | PERMISSIONS (VIEW vs MANAGE)
         |--------------------------------------------------------------------------
-        */
-        $permissions = [
+        */$permissions = [
 
-            // Dashboard
-            'view dashboard',
+        // =====================================================
+        // Dashboard
+        // =====================================================
+        'view dashboard',
 
-            // User Management
-            'view users',
-            'manage users',
+        // =====================================================
+        // User Management
+        // =====================================================
+        'view users',
+        'manage users',
 
-            // Role Management
-            'view roles',
-            'manage roles',
+        // =====================================================
+        // Role Management
+        // =====================================================
+        'view roles',
+        'manage roles',
 
-            // Permission Management
-            'view permissions',
-            'manage permissions',
+        // =====================================================
+        // Permission Management
+        // =====================================================
+        'view permissions',
+        'manage permissions',
 
-            // Action & Error Logs
-            'view action logs',
-            'view error logs',
-            'manage error logs',
+        // =====================================================
+        // Action & Error Logs
+        // =====================================================
+        'view action logs',
+        'view error logs',
+        'manage error logs',
 
-            // System Settings
-            'view system config',
-            'manage system config',
+        // =====================================================
+        // System Settings
+        // =====================================================
+        'view system config',
+        'manage system config',
 
-            // Session Manager
-            'view sessions',
-            'manage sessions',
+        // =====================================================
+        // Session Manager
+        // =====================================================
+        'view sessions',
+        'manage sessions',
 
-            // Resource Monitoring
-            'view resource monitoring',
+        // =====================================================
+        // Resource Monitoring
+        // =====================================================
+        'view resource monitoring',
 
-            // Notification Center
-            'view notifications',
-            'manage notifications',
+        // =====================================================
+        // Notification Center
+        // =====================================================
+        'view notifications',
+        'manage notifications',
 
-            // Impersonate
-            'impersonate users',
-        ];
+        // =====================================================
+        // Impersonate
+        // =====================================================
+        'impersonate users',
+
+        // =====================================================
+        // ORGANIZATIONAL MASTER (NEW FEATURE)
+        // =====================================================
+
+        // Company Code
+        'view company codes',
+        'manage company codes',
+
+        // Personnel Area
+        'view personnel areas',
+        'manage personnel areas',
+
+        // Personnel Sub Area
+        'view personnel sub areas',
+        'manage personnel sub areas',
+
+        // Division
+        'view divisions',
+        'manage divisions',
+
+        // Department
+        'view departments',
+        'manage departments',
+
+        // Section
+        'view sections',
+        'manage sections',
+
+        // Unit
+        'view units',
+        'manage units',
+
+        // Sub Unit
+        'view sub units',
+        'manage sub units',
+
+        // Position
+        'view positions',
+        'manage positions',
+
+        // Job Level
+        'view job levels',
+        'manage job levels',
+
+    ];
 
         /*
         |--------------------------------------------------------------------------

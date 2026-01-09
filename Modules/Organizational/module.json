@@ -1,0 +1,11 @@
+{
+    "name": "Organizational",
+    "alias": "organizational",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Organizational\\app\\Providers\\OrganizationalServiceProvider"
+    ],
+    "files": []
+}

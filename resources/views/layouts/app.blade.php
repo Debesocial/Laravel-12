@@ -89,6 +89,19 @@
         font-size: 14px;
         line-height: 1.3;
     }
+    
+    .permission-clamp {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .permission-clamp .badge {
+        margin-right: 4px;
+        margin-bottom: 2px;
+    }
     </style>
 
     {{-- apps css --}}

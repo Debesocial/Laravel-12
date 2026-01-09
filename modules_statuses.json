@@ -2,5 +2,12 @@
     "Hris": true,
     "AiPrototype": true,
     "Aiprototype": true,
-    "Organization": true
+    "Organization": true,
+    "PersonnelAdministration": true,
+    "TimeManagement": true,
+    "Recruitment": true,
+    "Payroll": true,
+    "Organizational": true,
+    "Recruitmentphp": true,
+    "Artisan": true
 }
